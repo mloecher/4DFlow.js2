@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+    <head>
+        <title>4DFlow.js</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+        <link href="css/demo.css" rel="stylesheet" />
+
+        <!-- <link href="vendor/css/jquery.nouislider.css" rel="stylesheet" /> -->
+        <link href="vendor/css/jquery.mmenu.all.css" rel="stylesheet" />
+
+        <script src="vendor/js/jquery-2.1.3.js"></script>
+        <script src="vendor/js/three.js"></script>
+        <!-- <script src="vendor/js/jquery.nouislider.all.js"></script> -->
+        <script src="vendor/js/jquery.mmenu.min.all.js"></script>
+
+        <script src="js/4DFlow.js"></script>
+        <script src="js/websocket.js"></script>
+        <script src="js/controls.js"></script>
+        <script src="js/space.js"></script>
+
+        <script>
+            $(document).ready(function () {
+
+                space = new FLOW.Space();
+
+                ws_conn = new FLOW.Websocket(space);
+
+                function animate() {
+                    requestAnimationFrame( animate );
+                    space.render();
+                }
+
+                animate();
+
+                function tester() {
+                    var request = new Object();
+                    request.type = "new isosurface";
+                    request.thresh  = (Math.random() + 0.5) * 0.5
+                    var json_string= JSON.stringify(request);
+                    ws_conn.ws.send(json_string)
+                }
+
+                // setInterval(tester, 2000);
+
+                function init() {
+                    var request = new Object();
+                    request.type = "new isosurface";
+                    request.thresh  = 0.21;
+                    var json_string= JSON.stringify(request);
+                    ws_conn.request(json_string);
+                }
+
+                init();
+
+                $("#menu").mmenu();
+                
+
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <div class="page">
+           <div class="header">
+            <a href="#menu"></a>
+            4DFlow.js
+        </div>
+        <div class="content" id="content">
+         </div>
+     </div>
+     <nav id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About us</a></li>
+            <li><a href="/contact/">Contact</a></li>
+        </ul>
+    </nav>
+
+</body>
+</html>
+
+
+
+
