@@ -1,0 +1,62 @@
+#mm-blocker {
+   display: none !important;
+}
+
+.mm-menu.mm-custom {
+  width: 100%;
+  min-width: 340px;
+  max-width: 320px; }
+
+html.mm-opening.mm-custom .mm-slideout {
+  -webkit-transform: translate(20%, 0);
+  -moz-transform: translate(20%, 0);
+  -ms-transform: translate(20%, 0);
+  -o-transform: translate(20%, 0);
+  transform: translate(20%, 0); }
+
+@media all and (max-width: 320px) {
+  html.mm-opening.mm-custom .mm-slideout {
+    -webkit-transform: translate(320px, 0);
+    -moz-transform: translate(320px, 0);
+    -ms-transform: translate(320px, 0);
+    -o-transform: translate(320px, 0);
+    transform: translate(320px, 0); } }
+
+@media all and (min-width: 340px) {
+  html.mm-opening.mm-custom .mm-slideout {
+    -webkit-transform: translate(340px, 0);
+    -moz-transform: translate(340px, 0);
+    -ms-transform: translate(340px, 0);
+    -o-transform: translate(340px, 0);
+    transform: translate(340px, 0); } }
+
+html.mm-right.mm-opening.mm-custom .mm-slideout {
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+  transform: translate(-100%, 0); }
+
+@media all and (max-width: 320px) {
+  html.mm-right.mm-opening.mm-custom .mm-slideout {
+    -webkit-transform: translate(-320px, 0);
+    -moz-transform: translate(-320px, 0);
+    -ms-transform: translate(-320px, 0);
+    -o-transform: translate(-320px, 0);
+    transform: translate(-320px, 0); } }
+
+@media all and (min-width: 340px) {
+  html.mm-right.mm-opening.mm-custom .mm-slideout {
+    -webkit-transform: translate(-340px, 0);
+    -moz-transform: translate(-340px, 0);
+    -ms-transform: translate(-340px, 0);
+    -o-transform: translate(-340px, 0);
+    transform: translate(-340px, 0); } }
+
+.mm-menu.mm-front.mm-custom.mm-top, .mm-menu.mm-front.mm-custom.mm-bottom {
+  height: 100%;
+  min-height: 340px;
+  max-height: 320px; }
+
+html.mm-opened.mm-custom .mm-page {
+  box-shadow: none !important; }

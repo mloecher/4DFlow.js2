@@ -2,6 +2,7 @@ html, body
 {
 	padding: 0;
 	margin: 0;
+	height: 100%;
 }
 body
 {
@@ -94,5 +95,6 @@ nav:not(.mm-menu)
 }
 .content
 {
-	padding: 150px 50px 50px 50px;
+	height: 100%;
+	/*padding: 150px 50px 50px 50px;*/
 }

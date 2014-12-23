@@ -1,0 +1,95 @@
+html, body
+{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+body
+{
+    background-color: #111111;
+    font-family: 'Roboto', sans-serif;
+    -webkit-text-size-adjust: none;
+}
+
+
+.menu-button
+{
+    background-image: url( data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADhJREFUeNpi/P//PwOtARMDHQBdLGFBYtMq3BiHT3DRPU4YR4NrNAmPJuHRJDyahEeT8Ii3BCDAAF0WBj5Er5idAAAAAElFTkSuQmCC );
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.button {
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  color: #ffffff;
+   border:0;
+  /*font-size: 20px;*/
+  background: #3498db;
+  padding: 5px 5px;
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+
+.title
+{
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+    /*width: 100%;*/
+}
+
+
+.content
+{
+    height: 100%;
+}
+
+.about
+{
+    padding: 15px;
+}
+
+.menu-iso
+{
+    padding: 5px;
+
+}
+
+.sliders
+{   
+    /*display: inline;*/
+    margin: 0px 10px;
+    width: 200px;
+    /*height: 10px;*/
+    display: inline-block;
+    /*z-index: 999;*/
+}
+
+.noUi-horizontal.noUi-extended {
+    padding-right: 32px;
+}
+.noUi-horizontal.noUi-extended .noUi-handle {
+    left: -1px;
+}
+.noUi-horizontal.noUi-extended .noUi-origin  {
+    right: -32px;
+}
+
+input[type="text"]
+{
+    width: 40px;
+}
