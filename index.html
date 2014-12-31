@@ -14,7 +14,7 @@
         <link href="css/test.css" rel="stylesheet" />
         <link href="css/mmenu.css" rel="stylesheet" />
 
-        
+        <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
 
         <script src="vendor/js/jquery-2.1.3.js"></script>
         <script src="vendor/js/three.js"></script>
@@ -29,6 +29,8 @@
         <script src="js/space.js"></script>
 
         <script src="js/ui.js"></script>
+
+        <!-- <script src="js/charttest.js"></script> -->
 
         <script>
             $(document).ready(function () {
@@ -55,7 +57,7 @@
                 // setInterval(tester, 2000);
 
                 function init() {
-                    var request = new Object();
+                    var request = {};
                     request.type = "new isosurface";
                     request.thresh  = 0.21;
                     var json_string= JSON.stringify(request);
@@ -77,6 +79,7 @@
         <div class="page">
         <div class="menu-button" id="menu-button"></div>
         <div class="content" id="content"> </div>
+        <div id="ex0"></div>
     </div>
 
 

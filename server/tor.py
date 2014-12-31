@@ -3,11 +3,11 @@ import tornado.websocket
 import tornado.ioloop
 import tornado.web
 import struct
-import sys
+import sys 
 import numpy as np
 import time
 import json
- 
+  
 from flow_data import FlowData
 
 FD = FlowData()
@@ -30,12 +30,12 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         print 'done'
 
     def send_plane(self, pos, norm):
-        res = FD.calc_plane(pos, norm)
+        res = FD.calc_plane2(pos, norm)
         header = {'type':'new_plane',
-                  'pos':res[0].tolist(),
-                  'norm':res[1].tolist(),
-                  'rot_axis':res[2].tolist(),
-                  'rot_angle':res[3]}
+                  'cpos':res[0].tolist(),
+                  'rx':res[1],
+                  'rz':res[2]
+                  }
         self.write_message(header)
         print 'done'
 

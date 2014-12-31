@@ -4,13 +4,13 @@ FLOW.Surface = function() {
     this.poly_array = undefined;
 
     this.all_objects = new THREE.Object3D();
-    this.all_objects.name = "all surfaces"
-}
+    this.all_objects.name = "all surfaces";
+};
 
 FLOW.Surface.prototype.update_surface = function() {
     var old_mesh = this.all_objects.getObjectByName("surface");
     if (old_mesh) {
-        console.log("free")
+        console.log("free");
         old_mesh.geometry.dispose();
         old_mesh.material.dispose();
         this.all_objects.remove(old_mesh);
@@ -51,13 +51,13 @@ FLOW.Surface.prototype.update_surface = function() {
     });
 
     var mesh = new THREE.Mesh(geo, surface_material);
-    mesh.name = 'surface'
+    mesh.name = 'surface';
 
     this.all_objects.add(mesh);
-}
+};
 
 FLOW.Surface.prototype.update_opacity = function(opacity) {
     var mesh = this.all_objects.getObjectByName("surface");
-    mesh.material.opacity = opacity
-    console.log(mesh.material)
-}
+    mesh.material.opacity = opacity;
+    console.log(mesh.material);
+};

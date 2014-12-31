@@ -4,8 +4,8 @@ function setup_ui() {
         classes: "mm-custom"
     });
 
-    $("#menu").trigger("open.mm");
-    space.resize();
+    // $("#menu").trigger("open.mm");
+    // space.resize();
 
     var menu_toggle = false;
     $("#menu-button").click(function() {
@@ -25,7 +25,7 @@ function setup_ui() {
     });
 
     $("#but1").click(function() {
-        var request = new Object();
+        var request = {};
         request.type = "new isosurface";
         request.thresh = 0.15;
         var json_string = JSON.stringify(request);
@@ -52,7 +52,7 @@ function setup_ui() {
     $("#slider2").Link('lower').to($('#input2'));
 
     $('#slider').on('set', function() {
-        var request = new Object();
+        var request = {};
         request.type = "new isosurface";
         request.thresh = $('#slider').val();
         var json_string = JSON.stringify(request);
