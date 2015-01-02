@@ -86,6 +86,20 @@ class FlowData(object):
 
         return (points, polys2)
 
+    def calc_streamlines(self):
+        n_lines = 100
+        n_steps = 100
+        step_size = 4
+        paths = np.zeros((n_steps, n_lines, 3))
+        
+        paths[0, :, :] = self.seed_lines()
+
+        for i in range(n-1):
+            pos0 = paths[i, :,:]
+            d = rk4(self.V, pos0, step_size)
+            paths[i+1, :,:] = paths[i,:,:] + d
+
+
     def get_velocity_values(self):
         pass
 
@@ -163,8 +177,6 @@ class FlowData(object):
         end = time.time()
         print end - start
 
-        print min_val 
-
         start = time.time()
         res = minimize(
             self.angle_function, x0,
@@ -174,14 +186,12 @@ class FlowData(object):
                 'disp': True,
                 'maxiter': 20}
         )
-        print res
         end = time.time()
         print end - start
 
         x = res.x
 
         cpos = self.refine_cpos(x, coords, cpos)
-
 
         return cpos - self.offset[::-1], res.x[0], res.x[1]
 
@@ -220,15 +230,6 @@ class FlowData(object):
         print out
         
         return out
-
-    def angle_function_temp(self, x, coords, cpos):
-        rot_coords = self.xz_rotate(coords, x[0], x[1]) + cpos[:,np.newaxis,np.newaxis]
-        t = self.trilinear_interp(self.CD, rot_coords)
-        mask = self.gen_2d_mask(t)
-        t = t*mask
-        m = moments(t)
-        print m[0, 1] / m[0, 0], m[1, 0] / m[0, 0]
-        return np.linalg.norm(t)
 
     def angle_function(self, x, coords, cpos):
         rot_coords = self.xz_rotate(coords, x[0], x[1]) + cpos[:,np.newaxis,np.newaxis]
