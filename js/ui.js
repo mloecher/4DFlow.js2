@@ -6,8 +6,9 @@ function setup_ui() {
 
     // $("#menu").trigger("open.mm");
     // space.resize();
+    // var menu_toggle = false;
 
-    var menu_toggle = false;
+    var menu_toggle = true;
     $("#menu-button").click(function() {
         console.log('click')
         if (menu_toggle) {
@@ -36,15 +37,15 @@ function setup_ui() {
         start: [0.21],
         range: {
             'min': [0],
-            'max': [1]
+            'max': [0.5]
         }
     });
 
     $("#slider2").noUiSlider({
-        start: [1.0],
+        start: [.2],
         range: {
-            'min': [0],
-            'max': [1]
+            'min': [0.0],
+            'max': [0.4]
         }
     });
 
@@ -61,7 +62,15 @@ function setup_ui() {
     });
 
     $('#slider2').on('set', function() {
-        space.surface.update_opacity($('#slider2').val());
+        space.surface.update_opacity();
     });
 
+    $('#trans_check').change(function() {
+        space.surface.update_opacity();
+    });
+
+    editableGrid = new EditableGrid("DemoGridJSON"); 
+    editableGrid.tableLoaded = function() { this.renderGrid("tablecontent", "testgrid"); };
+    editableGrid.loadJSON("grid2.json");
+    
 }

@@ -40,7 +40,8 @@ FLOW.Surface.prototype.update_surface = function() {
     geo.computeVertexNormals();
 
     var surface_material = new THREE.MeshLambertMaterial({
-        side: THREE.FrontSide,
+        // side: THREE.FrontSide,
+        side: THREE.DoubleSide,
         color: 0xBBBBBB,
         ambient: 0xBBBBBB,
         transparent: true,
@@ -56,8 +57,20 @@ FLOW.Surface.prototype.update_surface = function() {
     this.all_objects.add(mesh);
 };
 
-FLOW.Surface.prototype.update_opacity = function(opacity) {
+FLOW.Surface.prototype.update_opacity = function() {
+
     var mesh = this.all_objects.getObjectByName("surface");
-    mesh.material.opacity = opacity;
+
+    if ($('#trans_check').prop('checked')) {
+        mesh.material.opacity = $('#slider2').val();
+        // mesh.material.depthTest = false;
+        mesh.material.depthWrite = false;
+    } else {
+        mesh.material.opacity = 1.0;
+        // mesh.material.depthTest = true;
+        mesh.material.depthWrite = true;
+    }
+
+    
     console.log(mesh.material);
 };

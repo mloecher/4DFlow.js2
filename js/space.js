@@ -92,5 +92,14 @@ FLOW.Space.prototype.add_plane = function(request) {
     console.log(plane)
     
     this.all_objects.add( plane );
+
+    var newRowId = 0;
+    for (var r = 0; r < editableGrid.getRowCount(); r++) {
+        newRowId = Math.max(newRowId, parseInt(editableGrid.getRowId(r)) + 1);
+    }
+    console.log(newRowId)
+    var values = editableGrid.getRowValues(0);
+    values['name'] = values['name'] + ' (copy)';
+    editableGrid.append(newRowId, values); 
 ;
 }

@@ -13,6 +13,7 @@ import time
 # import sys
 import os
 from scipy.optimize import minimize
+from scipy.interpolate import interpn
 from skimage.measure import label, moments
 from skimage.morphology import binary_dilation
 
@@ -129,6 +130,7 @@ class FlowData(object):
 
     def calc_plane2(self, pos, norm):
 
+
         cpos, ui_norm = self.get_center_approx(pos, norm)
 
         nx = 21
@@ -141,10 +143,9 @@ class FlowData(object):
         coords = np.array([xx, yy, np.zeros_like(xx)])
 
         # Get an initial guess for the angle, then refine with Nelder-Mead
-        nth = 4
+        nth = 4 
         x_theta = np.linspace(0, np.pi/2, nth+2)
         z_theta = np.linspace(-np.pi/2, np.pi/2, nth+1)
-
         x_theta = x_theta[1:-1]
         z_theta = z_theta[:-1]
 
@@ -165,7 +166,6 @@ class FlowData(object):
         print min_val 
 
         start = time.time()
-        
         res = minimize(
             self.angle_function, x0,
             args=(coords, cpos),
@@ -180,7 +180,8 @@ class FlowData(object):
 
         x = res.x
 
-        self.angle_function_temp(x, coords, cpos)
+        cpos = self.refine_cpos(x, coords, cpos)
+
 
         return cpos - self.offset[::-1], res.x[0], res.x[1]
 
@@ -198,6 +199,27 @@ class FlowData(object):
         mask = binary_dilation(mask, cross)
 
         return mask
+
+    def refine_cpos(self, x, coords, cpos):
+        rot_coords = self.xz_rotate(coords, x[0], x[1]) + cpos[:,np.newaxis,np.newaxis]
+        t = self.trilinear_interp(self.CD, rot_coords)
+        mask = self.gen_2d_mask(t)
+        # t = t*mask
+        m = moments(mask.astype('float'))
+        pos = (m[0, 1] / m[0, 0], m[1, 0] / m[0, 0])
+
+        x = np.arange(21)
+        y = np.arange(21)
+
+        x_off = interpn((x,y),rot_coords[0], pos)
+        y_off = interpn((x,y),rot_coords[1], pos)
+        z_off = interpn((x,y),rot_coords[2], pos)
+
+        print cpos
+        out = np.array([x_off[0], y_off[0], z_off[0]])
+        print out
+        
+        return out
 
     def angle_function_temp(self, x, coords, cpos):
         rot_coords = self.xz_rotate(coords, x[0], x[1]) + cpos[:,np.newaxis,np.newaxis]
@@ -269,113 +291,4 @@ class FlowData(object):
                   input_array[x1, y1, z1] * x * y * z)
 
         return output
-
-
-
-    def calc_plane(self, pos, norm):
-        pos = np.array([float(x) for x in pos])
-        norm = np.array([float(x) for x in norm])
-
-        pos0 = pos
-
-        pos = pos + self.offset[::-1]
-
-        perp0 = np.zeros_like(norm)
-        perp0[0] = norm[1]
-        perp0[1] = -norm[0]
-        perp0 = perp0 / np.linalg.norm(perp0)
-
-        min_val = float('Inf')
-        out = [0, 0, 0, 0]
-        out[0] = pos0
-        out[1] = norm
-
-        # print norm
-        # print perp
-
-        theta = 0
-
-        for theta in np.linspace(0.0, np.pi, 50):
-
-            perp = rotate_plane(perp0, norm, theta)
-
-            r = np.arange(-5.0, 15.0)
-            rr = np.tile(r, (3, 1))
-            # print rr
-            # print rr.shape
-
-            ind = rr * \
-                np.tile(-norm[:, np.newaxis], (1, 20)) + \
-                np.tile(pos[:, np.newaxis], (1, 20))
-            ind = np.tile(ind, (1, 20))
-
-            y = np.arange(-10.0, 10.0)
-
-            yy = np.tile(y[:, np.newaxis], (1, 20)).ravel()
-            # print yy.shape
-            yy = np.tile(yy, (3, 1))
-            # print yy.shape
-
-            yy = yy * np.tile(perp[:, np.newaxis], (1, 400))
-
-            # print yy.shape
-
-            # print yy[0, :40]
-
-            # print ind[0, :40]
-
-            # mip = self.CD.max(0)
-
-            ind = ind + yy
-
-            t = self.trilinear_interp(self.CD, ind)
-
-            val = np.linalg.norm(t)
-
-            plane_norm = np.cross(norm, perp)
-            # print np.linalg.norm(plane_norm)
-            rot_axis = np.cross(plane_norm, np.array([0.0, 0.0, -1.0]))
-            rot_theta = - \
-                np.arccos(np.dot(plane_norm, np.array([0.0, 0.0, -1.0])))
-
-            rot_axis = rot_axis / np.linalg.norm(rot_axis)
-
-            # print rot_axis
-            # print rot_theta
-
-            # print theta
-            # print val
-
-            # print ' '
-
-            # print norm
-            # print perp
-
-            # print ' '
-
-            # print rot_axis
-            # print rot_theta
-
-            # print '\n'
-
-            if val < min_val:
-                min_val = val
-                out[2] = rot_axis
-                out[3] = rot_theta
-            # print t
-
-            # plt.imshow(np.reshape(t, (20, 20)))
-            # plt.show()
-
-            # plt.imshow(self.CD[round(pos[2]), :, :])
-            # plt.show()
-
-        return out
-
-
-def rotate_plane(line, rot_axis, theta):
-    r = np.cross(line, rot_axis)
-    out = np.cos(theta) * line + np.sin(theta) * r
-    return out
-
 
