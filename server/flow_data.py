@@ -16,6 +16,7 @@ from scipy.optimize import minimize
 from scipy.interpolate import interpn
 from skimage.measure import label, moments
 from skimage.morphology import binary_dilation
+from paths import rk4
 
 
 class FlowData(object):
@@ -23,14 +24,23 @@ class FlowData(object):
 
     def __init__(self):
         """Loads flow data into the object."""
-        fd = open(os.path.join('..', '..', '4dflowjs', 'data3', 'CD.bin'), 'rb')
+        fd = open(os.path.join('..', 'data', 'CD.bin'), 'rb')
         self.CD = np.fromfile(fd, 'float32')
+        fd.close()
+
+        fd = open(os.path.join('..', 'data', 'V.bin'), 'rb')
+        self.V = np.fromfile(fd, 'float32')
         fd.close()
 
         self.size = np.array([243, 203, 229])
         self.offset = np.round(self.size/2).astype(np.integer)
 
         self.CD = np.reshape(self.CD, self.size)
+        self.V = np.reshape(self.V, np.insert(self.size, 0, 3))
+
+        print self.V.shape
+        self.V = -self.V[::-1,:,:,:].astype('double')
+        print self.V.shape
 
         self.thresh = 0.21
 
@@ -38,6 +48,8 @@ class FlowData(object):
         norm = [0.9101205766063721, -0.24033774152975507, -0.33751786031862285]
 
         self.calc_plane2(pos, norm)
+
+        self.calc_streamlines()
 
     def get_surface(self, thresh=0.21):
         vol = vtk.vtkImageData()
@@ -86,18 +98,29 @@ class FlowData(object):
 
         return (points, polys2)
 
+    def seed_lines(self):
+        x = self.plane_coords[0][self.mask]
+        y = self.plane_coords[1][self.mask]
+        z = self.plane_coords[2][self.mask]
+
+        seeds = np.vstack((z,y,x))
+
+        return seeds.T
+
     def calc_streamlines(self):
-        n_lines = 100
-        n_steps = 100
+        n_lines = 61
+        n_steps = 40
         step_size = 4
         paths = np.zeros((n_steps, n_lines, 3))
         
         paths[0, :, :] = self.seed_lines()
 
-        for i in range(n-1):
+        for i in range(n_steps-1):
             pos0 = paths[i, :,:]
             d = rk4(self.V, pos0, step_size)
             paths[i+1, :,:] = paths[i,:,:] + d
+
+        self.paths = np.transpose(paths, (1, 0, 2))
 
 
     def get_velocity_values(self):
@@ -229,6 +252,9 @@ class FlowData(object):
         out = np.array([x_off[0], y_off[0], z_off[0]])
         print out
         
+        self.plane_coords = rot_coords
+        self.mask = (mask>0)
+
         return out
 
     def angle_function(self, x, coords, cpos):

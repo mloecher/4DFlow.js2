@@ -156,32 +156,33 @@ def interpolate3D3Dpointarray(np.ndarray[double, ndim=4] A,
     cdef np.ndarray[double, ndim=2] out = np.zeros((r0.shape[0], r0.shape[1]))
     
     for i in range(r0.shape[0]):
+        
     
-        out[i,0] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r0[i,2],0] + \
-              dr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r0[i,2],0] + \
-              ddr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r0[i,2],0] + \
-              ddr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r1[i,2],0] + \
-              ddr[i,0]*dr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r1[i,2],0] + \
-              dr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r1[i,2],0] + \
-              dr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r0[i,2],0] + \
-              dr[i,0]*dr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r1[i,2],0]
+        out[i,0] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[0,<int>r0[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              dr[i,0]*ddr[i,1]*ddr[i,2]*A[0,<int>r1[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*dr[i,1]*ddr[i,2]*A[0,<int>r0[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*ddr[i,1]*dr[i,2]*A[0,<int>r0[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              ddr[i,0]*dr[i,1]*dr[i,2]*A[0,<int>r0[i,0],<int>r1[i,1],<int>r1[i,2]] + \
+              dr[i,0]*ddr[i,1]*dr[i,2]*A[0,<int>r1[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              dr[i,0]*dr[i,1]*ddr[i,2]*A[0,<int>r1[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              dr[i,0]*dr[i,1]*dr[i,2]*A[0,<int>r1[i,0],<int>r1[i,1],<int>r1[i,2]]
         
-        out[i,1] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r0[i,2],1] + \
-              dr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r0[i,2],1] + \
-              ddr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r0[i,2],1] + \
-              ddr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r1[i,2],1] + \
-              ddr[i,0]*dr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r1[i,2],1] + \
-              dr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r1[i,2],1] + \
-              dr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r0[i,2],1] + \
-              dr[i,0]*dr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r1[i,2],1]
+        out[i,1] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[1,<int>r0[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              dr[i,0]*ddr[i,1]*ddr[i,2]*A[1,<int>r1[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*dr[i,1]*ddr[i,2]*A[1,<int>r0[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*ddr[i,1]*dr[i,2]*A[1,<int>r0[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              ddr[i,0]*dr[i,1]*dr[i,2]*A[1,<int>r0[i,0],<int>r1[i,1],<int>r1[i,2]] + \
+              dr[i,0]*ddr[i,1]*dr[i,2]*A[1,<int>r1[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              dr[i,0]*dr[i,1]*ddr[i,2]*A[1,<int>r1[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              dr[i,0]*dr[i,1]*dr[i,2]*A[1,<int>r1[i,0],<int>r1[i,1],<int>r1[i,2]]
         
-        out[i,2] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r0[i,2],2] + \
-              dr[i,0]*ddr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r0[i,2],2] + \
-              ddr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r0[i,2],2] + \
-              ddr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r0[i,1],<int>r1[i,2],2] + \
-              ddr[i,0]*dr[i,1]*dr[i,2]*A[<int>r0[i,0],<int>r1[i,1],<int>r1[i,2],2] + \
-              dr[i,0]*ddr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r0[i,1],<int>r1[i,2],2] + \
-              dr[i,0]*dr[i,1]*ddr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r0[i,2],2] + \
-              dr[i,0]*dr[i,1]*dr[i,2]*A[<int>r1[i,0],<int>r1[i,1],<int>r1[i,2],2]
+        out[i,2] = ddr[i,0]*ddr[i,1]*ddr[i,2]*A[2,<int>r0[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              dr[i,0]*ddr[i,1]*ddr[i,2]*A[2,<int>r1[i,0],<int>r0[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*dr[i,1]*ddr[i,2]*A[2,<int>r0[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              ddr[i,0]*ddr[i,1]*dr[i,2]*A[2,<int>r0[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              ddr[i,0]*dr[i,1]*dr[i,2]*A[2,<int>r0[i,0],<int>r1[i,1],<int>r1[i,2]] + \
+              dr[i,0]*ddr[i,1]*dr[i,2]*A[2,<int>r1[i,0],<int>r0[i,1],<int>r1[i,2]] + \
+              dr[i,0]*dr[i,1]*ddr[i,2]*A[2,<int>r1[i,0],<int>r1[i,1],<int>r0[i,2]] + \
+              dr[i,0]*dr[i,1]*dr[i,2]*A[2,<int>r1[i,0],<int>r1[i,1],<int>r1[i,2]]
     
     return out

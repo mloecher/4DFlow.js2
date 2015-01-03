@@ -7,10 +7,34 @@ import sys
 import numpy as np
 import time
 import json
+import os
+import mimetypes
   
 from flow_data import FlowData
 
+root = 'G:\\Dropbox\\4dflowjs3\\'
+print root
+
 FD = FlowData()
+
+class FileHandler(tornado.web.RequestHandler):
+    def get(self, path):
+        if not path:
+            path = 'index.html'
+
+        path = root + path
+        print path
+
+        if not os.path.exists(path):
+            raise tornado.web.HTTPError(404)
+
+        mime_type = mimetypes.guess_type(path)
+        self.set_header("Content-Type", mime_type[0] or 'text/plain')
+
+        outfile = open(path)
+        for line in outfile:
+            self.write(line)
+        self.finish()
 
 class WSHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
@@ -27,6 +51,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         self.write_message(header)
         self.write_message(verts.ravel().tostring(), binary=True)
         self.write_message(polys.ravel().tostring(), binary=True)
+        self.send_paths()
         print 'done'
 
     def send_plane(self, pos, norm):
@@ -37,6 +62,14 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                   'rz':res[2]
                   }
         self.write_message(header)
+        print 'done'
+
+    def send_paths(self):
+        header = {'type':'paths',
+                  'steps':FD.paths.shape[1],
+                  }
+        self.write_message(header)
+        self.write_message(FD.paths.ravel().tostring(), binary=True)
         print 'done'
 
     def on_message(self, message):
@@ -53,8 +86,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
  
  
 application = tornado.web.Application([
+    (r"/(.*)", FileHandler),
     (r'/ws', WSHandler),
-])
+    ], static_path=root)
  
  
 if __name__ == "__main__":

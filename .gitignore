@@ -1,4 +1,5 @@
 data/
+*.c
 
 # -----------
 # Python ignores
