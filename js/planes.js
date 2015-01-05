@@ -1,3 +1,0 @@
-FLOW.Planes = function() {
-
-};

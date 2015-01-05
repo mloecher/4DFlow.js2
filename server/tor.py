@@ -12,10 +12,15 @@ import mimetypes
   
 from flow_data import FlowData
 
-root = 'G:\\Dropbox\\4dflowjs3\\'
+root = 'G:\\Dropbox\\4dflowjs3\\static\\'
 print root
 
 FD = FlowData()
+
+class MyStaticFileHandler(tornado.web.StaticFileHandler):
+    def set_extra_headers(self, path):
+        # Disable cache
+        self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 
 class FileHandler(tornado.web.RequestHandler):
     def get(self, path):
@@ -51,7 +56,6 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         self.write_message(header)
         self.write_message(verts.ravel().tostring(), binary=True)
         self.write_message(polys.ravel().tostring(), binary=True)
-        self.send_paths()
         print 'done'
 
     def send_plane(self, pos, norm):
@@ -62,6 +66,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                   'rz':res[2]
                   }
         self.write_message(header)
+        self.send_paths()
         print 'done'
 
     def send_paths(self):
@@ -86,9 +91,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
  
  
 application = tornado.web.Application([
-    (r"/(.*)", FileHandler),
     (r'/ws', WSHandler),
-    ], static_path=root)
+    (r'/(.*)', MyStaticFileHandler, {'path': root}),
+    ])
  
  
 if __name__ == "__main__":

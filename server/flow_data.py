@@ -24,11 +24,11 @@ class FlowData(object):
 
     def __init__(self):
         """Loads flow data into the object."""
-        fd = open(os.path.join('..', 'data', 'CD.bin'), 'rb')
+        fd = open(os.path.join('..', 'static', 'data', 'CD.bin'), 'rb')
         self.CD = np.fromfile(fd, 'float32')
         fd.close()
 
-        fd = open(os.path.join('..', 'data', 'V.bin'), 'rb')
+        fd = open(os.path.join('..', 'static', 'data', 'V.bin'), 'rb')
         self.V = np.fromfile(fd, 'float32')
         fd.close()
 
@@ -39,7 +39,7 @@ class FlowData(object):
         self.V = np.reshape(self.V, np.insert(self.size, 0, 3))
 
         print self.V.shape
-        self.V = -self.V[::-1,:,:,:].astype('double')
+        self.V = self.V[::-1,:,:,:].astype('double')
         print self.V.shape
 
         self.thresh = 0.21
@@ -49,7 +49,7 @@ class FlowData(object):
 
         self.calc_plane2(pos, norm)
 
-        self.calc_streamlines()
+        
 
     def get_surface(self, thresh=0.21):
         vol = vtk.vtkImageData()
@@ -69,7 +69,7 @@ class FlowData(object):
         start = time.time()
 
         marchingcubes = vtk.vtkMarchingCubes()
-        marchingcubes.SetInputData(vol)
+        marchingcubes.SetInput(vol)
         marchingcubes.SetValue(0, thresh)
         marchingcubes.Update()
         surface = marchingcubes.GetOutput()
@@ -108,9 +108,9 @@ class FlowData(object):
         return seeds.T
 
     def calc_streamlines(self):
-        n_lines = 61
-        n_steps = 40
-        step_size = 4
+        n_lines = self.mask.sum()
+        n_steps = 100
+        step_size = 10.0
         paths = np.zeros((n_steps, n_lines, 3))
         
         paths[0, :, :] = self.seed_lines()
@@ -120,7 +120,11 @@ class FlowData(object):
             d = rk4(self.V, pos0, step_size)
             paths[i+1, :,:] = paths[i,:,:] + d
 
-        self.paths = np.transpose(paths, (1, 0, 2))
+        paths = paths - self.offset[np.newaxis,np.newaxis,:]
+        paths = paths[:,:,::-1]
+
+
+        self.paths = np.transpose(paths, (1, 0, 2)).astype('single')
 
 
     def get_velocity_values(self):
@@ -215,6 +219,8 @@ class FlowData(object):
         x = res.x
 
         cpos = self.refine_cpos(x, coords, cpos)
+
+        self.calc_streamlines()
 
         return cpos - self.offset[::-1], res.x[0], res.x[1]
 

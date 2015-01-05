@@ -69,7 +69,9 @@ function setup_ui() {
         space.surface.update_opacity();
     });
 
-    editableGrid = new EditableGrid("DemoGridJSON"); 
+    editableGrid = new EditableGrid("DemoGridJSON", {
+        modelChanged: function(rowIdx, colIdx, oldValue, newValue, row) { space.planes.grid_changed(rowIdx, colIdx, oldValue, newValue, row) }
+    }); 
     editableGrid.tableLoaded = function() { this.renderGrid("tablecontent", "testgrid"); };
     editableGrid.loadJSON("grid2.json");
     

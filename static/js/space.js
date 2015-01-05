@@ -31,9 +31,15 @@ FLOW.Space = function() {
 
     // Global containter, this is what we control with the mouse
     this.all_objects = new THREE.Object3D();
+    
     this.surface = new FLOW.Surface();
     this.all_objects.add(this.surface.all_objects);
+
     this.planes = new FLOW.Planes();
+    this.all_objects.add(this.planes.all_objects);
+
+    this.paths = new FLOW.Paths();
+    this.all_objects.add(this.paths.all_objects);
     
 
     // Add mouse controls
@@ -69,37 +75,3 @@ FLOW.Space.prototype.render = function() {
     this.renderer.render(this.scene, this.camera);
 };
 
-FLOW.Space.prototype.add_plane = function(request) {
-    var geometry = new THREE.PlaneGeometry( 20, 20);
-    var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-    var plane = new THREE.Mesh( geometry, material );
-    
-    // plane.rotation.x = request.rx
-    // plane.rotation.z = request.rz
-
-    plane.applyMatrix(new THREE.Matrix4().makeRotationX(request.rx));
-    plane.applyMatrix(new THREE.Matrix4().makeRotationZ(request.rz));
-    // rot_axis = new THREE.Vector3(request.rot_axis[0],request.rot_axis[1],request.rot_axis[2]);
-    // plane.applyMatrix(new THREE.Matrix4().makeRotationAxis(rot_axis, request.rot_angle));
-
-    // // This should be replaced with centering on the python side
-    // var scale = -3.5;
-    // var xpos = request.pos[0] + scale*request.norm[0];
-    // var ypos = request.pos[1] + scale*request.norm[1];
-    // var zpos = request.pos[2] + scale*request.norm[2];
-    plane.applyMatrix(new THREE.Matrix4().makeTranslation(request.cpos[0], request.cpos[1], request.cpos[2]));
-    
-    console.log(plane)
-    
-    this.all_objects.add( plane );
-
-    var newRowId = 0;
-    for (var r = 0; r < editableGrid.getRowCount(); r++) {
-        newRowId = Math.max(newRowId, parseInt(editableGrid.getRowId(r)) + 1);
-    }
-    console.log(newRowId)
-    var values = editableGrid.getRowValues(0);
-    values['name'] = values['name'] + ' (copy)';
-    editableGrid.append(newRowId, values); 
-;
-}
