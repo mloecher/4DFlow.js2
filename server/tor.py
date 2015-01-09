@@ -12,7 +12,8 @@ import mimetypes
   
 from flow_data import FlowData
 
-root = 'G:\\Dropbox\\4dflowjs3\\static\\'
+root = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'static')
+
 print root
 
 FD = FlowData()

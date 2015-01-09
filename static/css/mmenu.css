@@ -5,7 +5,8 @@
 .mm-menu.mm-custom {
   width: 100%;
   min-width: 340px;
-  max-width: 320px; }
+  max-width: 320px; 
+}
 
 html.mm-opening.mm-custom .mm-slideout {
   -webkit-transform: translate(20%, 0);

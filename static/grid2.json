@@ -3,6 +3,7 @@
 	{"name":"name","label":"NAME","datatype":"string","editable":true},
 	{"name":"vis","label":"VIS","datatype":"boolean","editable":true},
 	{"name":"report","label":"REPORT","datatype":"boolean","editable":true},
+    {"name":"action","label":" ","datatype":"html","editable":false},
 ],
 
 "data":[

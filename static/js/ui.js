@@ -2,7 +2,9 @@ function setup_ui() {
 
     $("#menu").mmenu({
         classes: "mm-custom"
-    });
+        }, {
+            panelNodetype:   "ul, ol"
+        });
 
     // $("#menu").trigger("open.mm");
     // space.resize();
@@ -70,9 +72,22 @@ function setup_ui() {
     });
 
     editableGrid = new EditableGrid("DemoGridJSON", {
+
+        tableLoaded: function() { 
+            
+            // renderer for the action column
+            this.setCellRenderer("action", new CellRenderer({render: function(cell, value) { 
+                var rowId = editableGrid.getRowId(cell.rowIndex);
+                
+                cell.innerHTML = "<a href=\"javascript:void(0)\" onclick=space.planes.test(" + rowId + ")>hey</a>";
+            }})); 
+
+            // render the grid
+            this.renderGrid("tablecontent", "testgrid"); 
+        },
+
         modelChanged: function(rowIdx, colIdx, oldValue, newValue, row) { space.planes.grid_changed(rowIdx, colIdx, oldValue, newValue, row) }
     }); 
-    editableGrid.tableLoaded = function() { this.renderGrid("tablecontent", "testgrid"); };
     editableGrid.loadJSON("grid2.json");
     
 }

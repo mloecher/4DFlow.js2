@@ -87,38 +87,42 @@
 
 
     <nav id="menu">
-    <div>
+    <ul id="menu-ul">
     <div class="title">4DFlow.js</div>
         <ul>
             <li>
                 <span>About</span>
-                <ul><p class="about">
+                <ul>
+                <div class="submenu">
                     This is where I will tell you about this software when I have the time!
-                </p></ul>
+                </div>
+                </ul>
 
             </li>
             <li>
                <span>Isosurface</span>
-                <ul>
-                <p>
+                <ul>   
+                    <div class="submenu">
+                        Threshold: <br>
                         <div id="slider" class="sliders noUi-extended"></div>
                         <input id="input" type="text"><br>
-                        <input id="trans_check" type="checkbox">
+                        Transparency:
+                        <input id="trans_check" type="checkbox"> <br>
                         <div id="slider2" class="sliders noUi-extended"></div>
                         <input id="input2" type="text"><br>
-                    </p>
+                        </div>
                 </ul>
             </li>
             <li>
                <span>Planes</span>
                <ul>
-                <p>
+                <div class="submenu">
                         <div id="tablecontent"></div>
-                    </p>
+                        </div>
                 </ul>
            </li>
         </ul>
-        </div>
+        </ul>
     </nav>
 
 </body>

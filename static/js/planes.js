@@ -36,15 +36,26 @@ FLOW.Planes.prototype.add_plane = function(request) {
 FLOW.Planes.prototype.grid_changed = function(rowIdx, colIdx, oldValue, newValue, row) {
 
     var id_num = row.cells[0].innerText;
+
+    // console.log(this.all_objects.getObjectByName(id_num))
+
+    if (colIdx === 2) {
+        this.all_objects.getObjectByName(id_num).visible = newValue;
+    }
     
 
-    console.log(rowIdx)
-    console.log(colIdx)
-    console.log(oldValue)
-    console.log(newValue)
-    console.log(row)
-    console.log(row.cells[0].innerText)
+    // console.log(rowIdx)
+    // console.log(colIdx)
+    // console.log(oldValue)
+    // console.log(newValue)
+    // console.log(row)
+    // console.log(row.cells[0].innerText)
 
-    glob_row = row
+}
+
+FLOW.Planes.prototype.test = function(val) {
+
+    console.log('hey there planes test')
+    console.log(val)
 
 }
