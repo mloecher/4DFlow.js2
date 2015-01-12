@@ -18,6 +18,13 @@ print root
 
 FD = FlowData()
 
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        outfile = open(os.path.join(root, "index.html"))
+        for line in outfile:
+            self.write(line)
+        self.finish()
+
 class MyStaticFileHandler(tornado.web.StaticFileHandler):
     def set_extra_headers(self, path):
         # Disable cache
@@ -93,6 +100,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
  
 application = tornado.web.Application([
     (r'/ws', WSHandler),
+    (r'/', MainHandler),
     (r'/(.*)', MyStaticFileHandler, {'path': root}),
     ])
  
