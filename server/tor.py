@@ -11,6 +11,7 @@ import os
 import mimetypes
   
 from flow_data import FlowData
+from flow_proc import FlowProcessor
 
 root = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'static')
 
@@ -20,6 +21,8 @@ FD = FlowData()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        # The render method worked well for production level, but I couldn't get
+        # the caching to turn off
         outfile = open(os.path.join(root, "index.html"))
         for line in outfile:
             self.write(line)
@@ -30,59 +33,41 @@ class MyStaticFileHandler(tornado.web.StaticFileHandler):
         # Disable cache
         self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
 
-class FileHandler(tornado.web.RequestHandler):
-    def get(self, path):
-        if not path:
-            path = 'index.html'
-
-        path = root + path
-        print path
-
-        if not os.path.exists(path):
-            raise tornado.web.HTTPError(404)
-
-        mime_type = mimetypes.guess_type(path)
-        self.set_header("Content-Type", mime_type[0] or 'text/plain')
-
-        outfile = open(path)
-        for line in outfile:
-            self.write(line)
-        self.finish()
-
 class WSHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
     def open(self):
         print 'new connection'
+        self.FC = FlowProcessor(FD)
     
     def send_cd(self, thresh):
         print 'sending: ' + str(thresh)
         header = {'type':'new_isosurface',
                   'thresh':thresh}
-        verts, polys = FD.get_surface(thresh)
+        verts, polys = self.FC.get_surface(thresh)
         self.write_message(header)
         self.write_message(verts.ravel().tostring(), binary=True)
         self.write_message(polys.ravel().tostring(), binary=True)
         print 'done'
 
-    def send_plane(self, pos, norm):
-        res = FD.calc_plane2(pos, norm)
+    def send_plane(self, pos, norm, id_num):
+        res = self.FC.calc_plane2(pos, norm, id_num)
         header = {'type':'new_plane',
                   'cpos':res[0].tolist(),
                   'rx':res[1],
                   'rz':res[2]
                   }
         self.write_message(header)
-        self.send_paths()
         print 'done'
 
-    def send_paths(self):
+    def send_paths(self, typename, id_num):
+        res = self.FC.calc_streamlines(id_num)
         header = {'type':'paths',
-                  'steps':FD.paths.shape[1],
+                  'steps':res.shape[1],
                   }
         self.write_message(header)
-        self.write_message(FD.paths.ravel().tostring(), binary=True)
+        self.write_message(res.ravel().tostring(), binary=True)
         print 'done'
 
     def on_message(self, message):
@@ -91,7 +76,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         if request['type'] == 'new isosurface':
             self.send_cd(float(request['thresh']))
         elif request['type'] == 'plane point':
-            self.send_plane(request['pos'], request['norm'])
+            self.send_plane(request['pos'], request['norm'], request['id_num'])
+        elif request['type'] == 'paths_from_plane':
+            self.send_paths(request['type'], request['id_num'])
 
 
     def on_close(self):

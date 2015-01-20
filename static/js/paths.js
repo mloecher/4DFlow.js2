@@ -8,9 +8,9 @@ FLOW.Paths = function() {
 FLOW.Paths.prototype.draw_lines = function(n_steps) {
 
     var material = new THREE.LineBasicMaterial({
-                color: 0x00ff00,
+                color: 0xD500F9,
                 transparent: true,
-                opacity: .5,
+                opacity: .7,
     });
 
     n_lines = this.path_array.length/3/n_steps;
@@ -27,10 +27,5 @@ FLOW.Paths.prototype.draw_lines = function(n_steps) {
         var line = new THREE.Line(geo, material);
         this.all_objects.add(line);
     }
-
-    
-
-    
-
 
 }

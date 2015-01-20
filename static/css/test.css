@@ -13,6 +13,43 @@ body
     -webkit-text-size-adjust: none;
 }
 
+a.trash
+{
+    color: #eeeeee;
+    font-size: 16px;
+    vertical-align: top;
+}
+
+
+a.trash:hover
+{
+    color: #ff0000;
+}
+
+a.star
+{
+    color: #eeee00;
+    font-size: 16px;
+    vertical-align: top;
+}
+
+/*a.star:hover
+{
+    color: #00ff00;
+}*/
+
+a.star-highlight
+{
+    color: #00ff00;
+    font-size: 16px;
+    vertical-align: top;
+}
+
+/*a.star-highlight:hover
+{
+    color: #eeee00;
+}*/
+
 #ex0
 { 
   position: absolute; 
@@ -21,10 +58,48 @@ body
   z-index: 99; 
 }
 
-#tablecontent
-{ 
-  font-size: 14px;
+/* Outer border */
+table.testgrid { 
+  border-collapse: collapse; 
+  border: 1px solid #AAA;
+  width: 100%;
 }
+
+/* This is just horizontal borders? */
+table.testgrid tr {
+  border-bottom: 1px solid #AAA;
+}
+
+/* This is the colors of the hovered row (bg and text)*/
+table.testgrid>tbody tr:hover {
+  background-color: #444;
+  color: white;
+}
+
+/*table.testgrid>tbody tr:hover a {
+  color: white;
+}*/
+
+/* This is the table headers */
+table.testgrid th {
+  background: #222;
+  border: 1px solid #AAA;
+  color: #ddd;
+  text-align: center;
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  white-space: nowrap; 
+}
+
+/* These are the standard gridlines */
+table.testgrid td {
+  padding: 5px;
+  border: 1px solid #AAA;
+}
+
 
 #menu-ul
 {
@@ -60,6 +135,9 @@ body
   text-decoration: none;
 }
 
+.grid-button {
+  fill: #ffffff;
+}
 
 .title
 {

@@ -109,9 +109,22 @@ FLOW.Controls = function(object, camera, domElement) {
                 request.type = "plane point";
                 request.pos = [intersects[0].point.x, intersects[0].point.y, intersects[0].point.z];
                 request.norm = [intersects[0].face.normal.x, intersects[0].face.normal.y, intersects[0].face.normal.z];
+                
+                var pad = "000";
+                var id_num = (pad+space.planes.plane_id.toString()).slice(-pad.length);
+
+                console.log('id_num for new plane: ' + id_num);
+
+                request.id_num = id_num;
+
                 var json_string = JSON.stringify(request);
                 ws_conn.request(json_string);
-                // console.log(ws_conn)
+
+                request.type = "paths_from_plane";
+                request.id_num = id_num;
+
+                var json_string = JSON.stringify(request);
+                ws_conn.request(json_string);
             }
 
 

@@ -77,9 +77,31 @@ function setup_ui() {
             
             // renderer for the action column
             this.setCellRenderer("action", new CellRenderer({render: function(cell, value) { 
-                var rowId = editableGrid.getRowId(cell.rowIndex);
+                var rowInd = cell.rowIndex;
+                var rowId = editableGrid.getRowId(rowInd);
+
+                var pad = "000";
+                var id_num = (pad+rowId.toString()).slice(-pad.length);
+
+                var clicker = "space.planes.test('star', " + rowId + ")";
+                var button_im = "<i class=\"fa fa-star\"></i>"
+                cell.innerHTML = "<a class=\"star\" id=\"star-" + id_num + "\" href=\"javascript:void(0)\" onclick=\"" + clicker + "\">" + button_im + "</a>";
+
+                var clicker = "space.planes.test('delete', " + rowId + ")";
+                var button_im = "<i class=\"fa fa-trash\"></i>"
+                cell.innerHTML += "&nbsp;&nbsp;<a class=\"trash\" href=\"javascript:void(0)\" onclick=\"" + clicker + "\">" + button_im + "</a>";
                 
-                cell.innerHTML = "<a href=\"javascript:void(0)\" onclick=space.planes.test(" + rowId + ")>hey</a>";
+                // This make sure the highlighted star stays highlighted
+            }})); 
+
+            this.setHeaderRenderer("vis", new CellRenderer({render: function(cell, value) { 
+                var header_im = "<i class=\"fa fa-eye\"></i>";
+                cell.getElementsByTagName("a")[0].innerHTML = header_im;
+            }})); 
+
+            this.setHeaderRenderer("report", new CellRenderer({render: function(cell, value) { 
+                var header_im = "<i class=\"fa fa-line-chart\"></i>";
+                cell.getElementsByTagName("a")[0].innerHTML = header_im;
             }})); 
 
             // render the grid
