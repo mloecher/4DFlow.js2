@@ -92,7 +92,7 @@ class FlowProcessor(object):
         for i in range(n_steps-1):
             pos0 = paths[i, :,:]
             d = rk4(self.V, pos0, step_size)
-            paths[i+1, :,:] = paths[i,:,:] + d
+            paths[i+1, :,:] = (paths[i,:,:] + d).clip(0, np.array(self.V.shape[1:])-1)
 
         paths = paths - self.offset[np.newaxis,np.newaxis,:]
         paths = paths[:,:,::-1]

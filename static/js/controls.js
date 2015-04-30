@@ -120,11 +120,15 @@ FLOW.Controls = function(object, camera, domElement) {
                 var json_string = JSON.stringify(request);
                 ws_conn.request(json_string);
 
-                request.type = "paths_from_plane";
-                request.id_num = id_num;
+                console.log($('#auto-stream').prop('checked'))
 
-                var json_string = JSON.stringify(request);
-                ws_conn.request(json_string);
+                if ($('#auto-stream').prop('checked')) {
+                    request.type = "paths_from_plane";
+                    request.id_num = id_num;
+
+                    var json_string = JSON.stringify(request);
+                    ws_conn.request(json_string);
+                }
             }
 
 

@@ -45,7 +45,6 @@ FLOW.Space = function() {
     // Add mouse controls
     this.controls = new FLOW.Controls(this.all_objects, this.camera, this.renderer.domElement);
 
-
     this.scene.add(this.all_objects);
 
     this.resize();
