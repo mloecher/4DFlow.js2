@@ -23,7 +23,7 @@ class FlowProcessor(object):
         self.offset = flow_data.offset
         self.planes = {}
 
-        print 'NEW FC'
+        print('NEW FC')
 
     def get_surface(self, thresh=0.21):
         vol = vtk.vtkImageData()
@@ -43,7 +43,7 @@ class FlowProcessor(object):
         start = time.time()
 
         marchingcubes = vtk.vtkMarchingCubes()
-        marchingcubes.SetInput(vol)
+        marchingcubes.SetInputData(vol)
         marchingcubes.SetValue(0, thresh)
         marchingcubes.Update()
         surface = marchingcubes.GetOutput()
@@ -51,7 +51,7 @@ class FlowProcessor(object):
         points = numpy_support.vtk_to_numpy(surface.GetPoints().GetData())
 
         if surface.GetPolys().GetMaxCellSize() > 3:
-            print 'ERROR, SQUARE POLYS EXIST'
+            print('ERROR, SQUARE POLYS EXIST')
         polys2 = np.zeros(
             (surface.GetPolys().GetNumberOfCells(), 3),
             dtype='uint32'
@@ -66,7 +66,7 @@ class FlowProcessor(object):
         vol.ReleaseData()
 
         end = time.time()
-        print end - start
+        print(end - start)
 
         self.thresh = thresh
 
@@ -126,16 +126,16 @@ class FlowProcessor(object):
         try:
             cutoff = np.where(t<self.thresh)[0][0]
         except:
-            print '-------------EXCEPT----1---'
+            print('-------------EXCEPT----1---')
             cutoff = t.size
-            print cutoff
+            print(cutoff)
 
         try:
             center = np.argmax(t[:cutoff])
         except:
-            print '-------------EXCEPT----2---'
-            print cutoff
-            print t[:cutoff]
+            print('-------------EXCEPT----2---')
+            print(cutoff)
+            print(t[:cutoff])
             center = 0
 
         cpos = pos + -norm*r[center]
@@ -174,7 +174,7 @@ class FlowProcessor(object):
                     min_val = val
                     x0 = x
         end = time.time()
-        print end - start
+        print(end - start)
 
         start = time.time()
         res = minimize(
@@ -186,7 +186,7 @@ class FlowProcessor(object):
                 'maxiter': 20}
         )
         end = time.time()
-        print end - start
+        print(end - start)
 
         x = res.x
 
@@ -205,7 +205,7 @@ class FlowProcessor(object):
 
         mask = (im>self.thresh).astype(int)
         mask = label(mask)
-        center_label = mask[mask.shape[0]/2, mask.shape[1]/2] 
+        center_label = mask[mask.shape[0]//2, mask.shape[1]//2] 
         mask = (mask==center_label)
 
         cross = np.array([[0,1,0], [1,1,1], [0,1,0]])

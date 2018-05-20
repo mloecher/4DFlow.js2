@@ -6,9 +6,9 @@ function setup_ui() {
             panelNodetype:   "ul, ol"
         });
 
-    // $("#menu").trigger("open.mm");
-    // space.resize();
-    // var menu_toggle = false;
+    $("#menu").trigger("open.mm");
+    space.resize();
+    var menu_toggle = false;
 
     var menu_toggle = true;
     $("#menu-button").click(function() {
@@ -73,10 +73,10 @@ function setup_ui() {
 
     editableGrid = new EditableGrid("DemoGridJSON", {
 
-        tableLoaded: function() { 
-            
+        tableLoaded: function() {
+
             // renderer for the action column
-            this.setCellRenderer("action", new CellRenderer({render: function(cell, value) { 
+            this.setCellRenderer("action", new CellRenderer({render: function(cell, value) {
                 var rowInd = cell.rowIndex;
                 var rowId = editableGrid.getRowId(rowInd);
 
@@ -90,26 +90,26 @@ function setup_ui() {
                 var clicker = "space.planes.test('delete', " + rowId + ")";
                 var button_im = "<i class=\"fa fa-trash\"></i>"
                 cell.innerHTML += "&nbsp;&nbsp;<a class=\"trash\" href=\"javascript:void(0)\" onclick=\"" + clicker + "\">" + button_im + "</a>";
-                
-                // This make sure the highlighted star stays highlighted
-            }})); 
 
-            this.setHeaderRenderer("vis", new CellRenderer({render: function(cell, value) { 
+                // This make sure the highlighted star stays highlighted
+            }}));
+
+            this.setHeaderRenderer("vis", new CellRenderer({render: function(cell, value) {
                 var header_im = "<i class=\"fa fa-eye\"></i>";
                 cell.getElementsByTagName("a")[0].innerHTML = header_im;
-            }})); 
+            }}));
 
-            this.setHeaderRenderer("report", new CellRenderer({render: function(cell, value) { 
+            this.setHeaderRenderer("report", new CellRenderer({render: function(cell, value) {
                 var header_im = "<i class=\"fa fa-line-chart\"></i>";
                 cell.getElementsByTagName("a")[0].innerHTML = header_im;
-            }})); 
+            }}));
 
             // render the grid
-            this.renderGrid("tablecontent", "testgrid"); 
+            this.renderGrid("tablecontent", "testgrid");
         },
 
         modelChanged: function(rowIdx, colIdx, oldValue, newValue, row) { space.planes.grid_changed(rowIdx, colIdx, oldValue, newValue, row) }
-    }); 
+    });
     editableGrid.loadJSON("grid2.json");
-    
+
 }

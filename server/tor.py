@@ -1,3 +1,5 @@
+print('Starting server')
+
 import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
@@ -15,7 +17,7 @@ from flow_proc import FlowProcessor
 
 root = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'static')
 
-print root
+print(root)
 
 FD = FlowData()
 
@@ -38,18 +40,18 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         return True
 
     def open(self):
-        print 'new connection'
+        print('new connection')
         self.FC = FlowProcessor(FD)
     
     def send_cd(self, thresh):
-        print 'sending: ' + str(thresh)
+        print('sending: ' + str(thresh))
         header = {'type':'new_isosurface',
                   'thresh':thresh}
         verts, polys = self.FC.get_surface(thresh)
         self.write_message(header)
         self.write_message(verts.ravel().tostring(), binary=True)
         self.write_message(polys.ravel().tostring(), binary=True)
-        print 'done'
+        print('done')
 
     def send_plane(self, pos, norm, id_num):
         res = self.FC.calc_plane2(pos, norm, id_num)
@@ -59,7 +61,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                   'rz':res[2]
                   }
         self.write_message(header)
-        print 'done'
+        print('done')
 
     def send_paths(self, typename, id_num):
         res = self.FC.calc_streamlines(id_num)
@@ -68,11 +70,11 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                   }
         self.write_message(header)
         self.write_message(res.ravel().tostring(), binary=True)
-        print 'done'
+        print('done')
 
     def on_message(self, message):
         request = json.loads(message)
-        print request
+        print(request)
         if request['type'] == 'new isosurface':
             self.send_cd(float(request['thresh']))
         elif request['type'] == 'plane point':
@@ -82,7 +84,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
 
     def on_close(self):
-      print 'connection closed'
+      print('connection closed')
  
  
 application = tornado.web.Application([
@@ -94,5 +96,5 @@ application = tornado.web.Application([
  
 if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888)
+    http_server.listen(8118)
     tornado.ioloop.IOLoop.instance().start()

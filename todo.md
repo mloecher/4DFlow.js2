@@ -13,4 +13,4 @@ Also we need to swtich the transparency settings
 - DONE: Fix transparency (toggle with slider)
 - DONE: Add plane table
 - Plane object
-- Streamlines from plane
+- DONE: Streamlines from plane

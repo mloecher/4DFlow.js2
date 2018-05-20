@@ -4,7 +4,7 @@ TODO:
 
 """
 
-# from vmtk import vmtkscripts 
+# from vmtk import vmtkscripts
 import numpy as np
 import os
 

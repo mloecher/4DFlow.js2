@@ -1,6 +1,9 @@
 data/
 OLD/
 *.c
+.idea/
+*.bak
+
 
 # -----------
 # Python ignores

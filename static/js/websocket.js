@@ -5,7 +5,7 @@ FLOW.Websocket = function(space) {
     this.receive_to = null;
     this.header_store = null;
 
-    this.ws = new WebSocket("ws://localhost:8888/ws"); 
+    this.ws = new WebSocket("ws://localhost:8118/ws"); 
     this.ws.binaryType = "arraybuffer";
 
     this.ws.onmessage = function(e) {
@@ -37,6 +37,7 @@ FLOW.Websocket.prototype.receive = function(evt, scene) {
         } else if (this.receive_to === 'poly') {
             space.surface.poly_array = new Uint32Array(evt.data);
             space.surface.update_surface();
+            space.surface.update_opacity();
             this.receive_to = null;
         } else if (this.receive_to === 'path') {
             space.paths.path_array = new Float32Array(evt.data);

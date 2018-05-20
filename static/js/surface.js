@@ -39,13 +39,14 @@ FLOW.Surface.prototype.update_surface = function() {
     geo.computeFaceNormals();
     geo.computeVertexNormals();
 
+    // TODO: Add check for transparency checkbox
     var surface_material = new THREE.MeshLambertMaterial({
         // side: THREE.FrontSide,
         side: THREE.DoubleSide,
         color: 0xBBBBBB,
         ambient: 0xBBBBBB,
         transparent: true,
-        // blending: THREE.NoBlending, 
+        // blending: THREE.NoBlending,
         opacity: 1.0,
         depthTest: true,
         depthWrite: true,
@@ -71,6 +72,6 @@ FLOW.Surface.prototype.update_opacity = function() {
         mesh.material.depthWrite = true;
     }
 
-    
+
     console.log(mesh.material);
 };

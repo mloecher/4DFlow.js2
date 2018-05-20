@@ -102,9 +102,10 @@ FLOW.Controls = function(object, camera, domElement) {
                 var origin = intersects[0].point;
                 var length = 4;
                 var hex = 0xff00ff;
-
+                
                 var arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex, 1.5, 1.5);
-                object.add(arrowHelper);
+                // This shows the calculated click poitn and normal vector
+                // object.add(arrowHelper);
 
                 request.type = "plane point";
                 request.pos = [intersects[0].point.x, intersects[0].point.y, intersects[0].point.z];
