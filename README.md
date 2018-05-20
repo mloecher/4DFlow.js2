@@ -1,29 +1,37 @@
-# README #
+# 4DFlow.js #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+ This is a python web server and javascript client for viewing and alnayzing 4D-Flow data.
 
-### What is this repository for? ###
+ # Installation #
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+ The server requires the following:
+ - numpy
+ - scipy
+ - tornado
+ - vtk 7+
 
-### How do I get set up? ###
+ There is one bit of cython in the server directory that is needed for 3D interpolation, and to compile it you must run:
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+``` 
+ python setup.py build_ext --inplace
+```
 
-### Contribution guidelines ###
+in the 'server' directory
 
-* Writing tests
-* Code review
-* Other guidelines
+# Running #
 
-### Who do I talk to? ###
+From the 'server' directory:
 
-* Repo owner or admin
-* Other community or team contact
+``` 
+ python tor.py
+``` 
+
+which will start the tornado web server on port 8118.  
+
+As of right now the program is hard coded to run on a local machine, but if the server and client are on different machines, the only line that needs to be changed is in 'static/js/websocket.js' where you must switch the 'localhost' in this line:
+
+```
+this.ws = new WebSocket("ws://localhost:8118/ws"); 
+``` 
+
+# About #
